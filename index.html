@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Digital Systems &amp; Binary Numbers | Digital Logic Design</title>
+<meta name="description" content="An interactive study site for Chapter 1 of Digital Logic Design: number systems, complements, signed binary, BCD and weighted codes, ASCII, parity, Hamming code, and Gray code." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23b8752b'/%3E%3Ctext x='12' y='16.3' font-family='monospace' font-size='10.5' font-weight='700' fill='white' text-anchor='middle'%3E10%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+  <header class="site-header">
+    <div class="site-header__left">
+      <button class="menu-toggle" id="menu-toggle-btn" aria-label="Toggle navigation menu" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <a href="#/" class="site-logo">
+        <span class="site-logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1.5"/><line x1="9" y1="2" x2="9" y2="7"/><line x1="15" y1="2" x2="15" y2="7"/><line x1="9" y1="17" x2="9" y2="22"/><line x1="15" y1="17" x2="15" y2="22"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/></svg></span>
+        <span class="site-logo__text">
+          <span class="site-logo__title">Digital Systems &amp; Binary Numbers</span>
+          <span class="site-logo__subtitle">Digital Logic Design · Chapter 1 · Made by Minhaz Abedin</span>
+        </span>
+      </a>
+    </div>
+    <div class="site-header__right">
+      <button class="search-trigger" id="search-trigger-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.3" y2="16.3"/></svg>
+        <span class="search-trigger__label">Search</span>
+        <kbd>/</kbd>
+      </button>
+      <div class="header-progress-chip">
+        <svg class="header-progress-chip__ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" opacity=".25"/><path d="M12 3a9 9 0 0 1 9 9" /></svg>
+        <span>Progress</span>
+        <strong>0%</strong>
+      </div>
+      <button class="icon-btn" id="theme-toggle-btn" aria-label="Toggle dark mode" type="button">
+        <span id="theme-toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg></span>
+      </button>
+    </div>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <div id="sidebar-nav-wrap"></div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <main class="main-content">
+    <div class="container">
+      <div id="page-content"></div>
+    </div>
+  </main>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script src="js/quizData.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/app.js"></script>
+<script src="js/search.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/tools/numberConverter.js"></script>
+<script src="js/tools/complementTool.js"></script>
+<script src="js/tools/signedNumberTool.js"></script>
+<script src="js/tools/codesTool.js"></script>
+<script src="js/tools/asciiTool.js"></script>
+<script src="js/tools/parityTool.js"></script>
+<script src="js/tools/hammingTool.js"></script>
+<script src="js/tools/grayCodeTool.js"></script>
+</body>
+</html>
