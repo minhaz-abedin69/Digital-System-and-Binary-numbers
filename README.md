@@ -14,10 +14,12 @@ digital-systems-course/
 │   └── style.css                Design system + every component + responsive rules
 ├── js/
 │   ├── utils.js                 Pure binary/number-system math (DLUtils) — no DOM access
-│   ├── data.js                  All course content, structured as topics → content "blocks"
+│   ├── data.js                  Chapter content, structured as topics → content "blocks"
 │   ├── quizData.js               26 quiz questions covering every topic
+│   ├── examData.js               16 real midterm exam questions (5 sittings) + full answers
+│   ├── aboutData.js              About-page facts (name/department/ID/university) + socials
 │   ├── progress.js               localStorage-backed topic-completion tracking (Progress)
-│   ├── search.js                 Search index + overlay UI (Search)
+│   ├── search.js                 Search index (topics + exam Q&A) + overlay UI (Search)
 │   ├── quiz.js                   Quiz page: filter → question flow → score screen (Quiz)
 │   ├── app.js                    Icons, router, shell, content-block renderer (App)
 │   └── tools/
@@ -31,6 +33,10 @@ digital-systems-course/
 │       └── grayCodeTool.js        Binary ↔ Gray code converter
 └── README.md
 ```
+
+Pages: Home · 11 chapter Topics · Interactive Tools hub · Practice/Quiz · **Exam Q&A**
+(16 real midterm questions, accordion-style, searchable) · References · **About**
+(name/department/ID/university + LinkedIn/Instagram, also linked in the header).
 
 No other files are required. There is no `package.json` and nothing to `npm
 install` — it's plain static HTML/CSS/JS.

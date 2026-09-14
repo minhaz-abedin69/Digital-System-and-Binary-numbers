@@ -27,12 +27,28 @@ window.Search = (function () {
     }
   }
 
+  function textOfExamBlock(block) {
+    switch (block.type) {
+      case 'p': return block.text;
+      case 'definition': return `${block.term}: ${block.text}`;
+      case 'note': return `${block.title}. ${block.text}`;
+      case 'example': return `${block.title}. ${block.given || ''} ${block.answer || ''}`;
+      case 'list': return (block.items || []).join(' ');
+      case 'table': return (block.rows || []).flat().join(' ');
+      case 'formula': return block.text;
+      case 'heading': return block.text;
+      default: return '';
+    }
+  }
+
   function buildIndex(data) {
     index = [];
     addEntry({ title: 'Home', breadcrumb: 'Course', snippet: data.home.overview, route: '#/' });
     addEntry({ title: 'Interactive Tools', breadcrumb: 'Course', snippet: 'All eight interactive calculators from the chapter.', route: '#/tools' });
     addEntry({ title: 'Practice / Quiz', breadcrumb: 'Course', snippet: 'A chapter-wide multiple choice quiz with instant feedback.', route: '#/quiz' });
     addEntry({ title: 'References', breadcrumb: 'Course', snippet: 'The textbooks this chapter draws on.', route: '#/references' });
+    addEntry({ title: 'Exam Q&A', breadcrumb: 'Course', snippet: 'Real midterm exam questions with full worked answers.', route: '#/exam-qa' });
+    addEntry({ title: 'About', breadcrumb: 'Course', snippet: 'Name, department, ID, university, and social links.', route: '#/about' });
 
     data.topics.forEach(topic => {
       addEntry({ title: topic.title, breadcrumb: `Topic ${topic.number}`, snippet: topic.dek, route: `#/topic/${topic.id}` });
@@ -56,6 +72,15 @@ window.Search = (function () {
     data.tools.forEach(tool => {
       addEntry({ title: tool.name, breadcrumb: 'Tool', snippet: tool.description, route: `#/topic/${tool.topicId}/tool-${tool.id}${tool.mode ? '-' + tool.mode : ''}` });
     });
+
+    if (window.EXAM_DATA) {
+      EXAM_DATA.papers.forEach(paper => {
+        paper.questions.forEach(q => {
+          const answerText = q.answer.map(textOfExamBlock).filter(Boolean).join(' ');
+          addEntry({ title: `Q${q.label}: ${q.question}`, breadcrumb: `${paper.title} · ${paper.term}`, snippet: answerText.slice(0, 160), route: `#/exam-qa/${q.id}` });
+        });
+      });
+    }
   }
 
   function score(entry, terms) {

@@ -36,7 +36,12 @@ const ICONS = {
   refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>',
   trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v6a4 4 0 0 1-8 0V3z"/><path d="M8 5H4a3 3 0 0 0 4 4"/><path d="M16 5h4a3 3 0 0 1-4 4"/><line x1="12" y1="13" x2="12" y2="17"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
   link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15l6-6"/><path d="M11 5l1.5-1.5a3.5 3.5 0 0 1 5 5L16 10"/><path d="M13 19l-1.5 1.5a3.5 3.5 0 0 1-5-5L8 14"/></svg>',
-  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5"/></svg>'
+  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02zM7 8.48H3.02V21H7zM13.32 8.48H9.53V21h3.79v-6.57c0-1.74.33-3.42 2.48-3.42 2.12 0 2.15 1.98 2.15 3.53V21H21.7v-7.18c0-3.6-.78-6.37-4.98-6.37-2.02 0-3.38 1.11-3.94 2.16h-.05V8.48z"/></svg>',
+  instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>',
+  clipboardQ: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="1.5"/><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/><path d="M10.5 11.2a1.5 1.5 0 1 1 2.1 1.4c-.7.35-1.1.7-1.1 1.4"/><circle cx="12" cy="16.6" r="0.15" fill="currentColor" stroke-width="2.4"/></svg>',
+  chevronDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'
 };
 
 const App = (function () {
@@ -121,7 +126,8 @@ const App = (function () {
       case 'heading': {
         const level = block.level || 2;
         const id = block.id || slugify(block.text);
-        return `<div class="block-heading" id="${id}"><h${level}>${formatInline(block.text)}</h${level}><a href="#/topic/${ctx.topicId}/${id}" class="block-heading__anchor" aria-label="Link to this section">${ICONS.link}</a></div>`;
+        const href = ctx.anchorBase ? `#/${ctx.anchorBase}/${id}` : `#/topic/${ctx.topicId}/${id}`;
+        return `<div class="block-heading" id="${id}"><h${level}>${formatInline(block.text)}</h${level}><a href="${href}" class="block-heading__anchor" aria-label="Link to this section">${ICONS.link}</a></div>`;
       }
       case 'list': {
         const tag = block.ordered ? 'ol' : 'ul';
@@ -150,8 +156,8 @@ const App = (function () {
     }
   }
 
-  function renderBlocks(blocks, topicId) {
-    const ctx = { topicId, toolMounts: [], blockIndex: 0 };
+  function renderBlocks(blocks, topicId, anchorBase) {
+    const ctx = { topicId, toolMounts: [], blockIndex: 0, anchorBase };
     const html = blocks.map((b, i) => { ctx.blockIndex = i; return renderBlock(b, ctx); }).join('\n');
     return { html, toolMounts: ctx.toolMounts };
   }
@@ -178,7 +184,9 @@ const App = (function () {
         <div class="sidebar__section-title">More</div>
         <a href="#/tools" class="sidebar__link${route.page === 'tools' ? ' is-active' : ''}">${ICONS.wrench}<span class="sidebar__link-text">Interactive Tools</span></a>
         <a href="#/quiz" class="sidebar__link${route.page === 'quiz' ? ' is-active' : ''}">${ICONS.quiz}<span class="sidebar__link-text">Practice / Quiz</span></a>
+        <a href="#/exam-qa" class="sidebar__link${route.page === 'exam-qa' ? ' is-active' : ''}">${ICONS.clipboardQ}<span class="sidebar__link-text">Exam Q&amp;A</span></a>
         <a href="#/references" class="sidebar__link${route.page === 'references' ? ' is-active' : ''}">${ICONS.book}<span class="sidebar__link-text">References</span></a>
+        <a href="#/about" class="sidebar__link${route.page === 'about' ? ' is-active' : ''}">${ICONS.user}<span class="sidebar__link-text">About</span></a>
       </nav>
       <div class="sidebar__progress">
         <div class="sidebar__progress-label"><span>Course Progress</span><strong>${pct}%</strong></div>
@@ -315,6 +323,49 @@ const App = (function () {
       <div class="block">${items}</div>`;
   }
 
+  function renderExamQA(openId) {
+    const paperSections = EXAM_DATA.papers.map(paper => {
+      const qItems = paper.questions.map(q => {
+        const isOpen = q.id === openId;
+        const { html: answerHtml } = renderBlocks(q.answer, null, `exam-qa/${q.id}`);
+        return `<div class="qa-item${isOpen ? ' is-open' : ''}" id="${q.id}">
+          <button class="qa-item__header" data-qa-toggle="${q.id}">
+            <span class="qa-item__label">${DLUtils.escapeHtml(q.label)}</span>
+            <span class="qa-item__question">${formatInline(q.question)}</span>
+            <span class="qa-item__meta">${q.marks ? `${q.marks} marks` : ''}${q.clo ? ` · ${q.clo}` : ''}</span>
+            <span class="qa-item__chevron">${ICONS.chevronDown}</span>
+          </button>
+          <div class="qa-item__body">${answerHtml}</div>
+        </div>`;
+      }).join('');
+      return `<section class="qa-paper">
+        <div class="qa-paper__header"><h2>${DLUtils.escapeHtml(paper.title)}</h2><span class="qa-paper__term">${DLUtils.escapeHtml(paper.term)}</span></div>
+        <div class="qa-list">${qItems}</div>
+      </section>`;
+    }).join('');
+
+    return `
+      ${breadcrumbHtml([{ label: 'Home', href: '#/' }, { label: 'Exam Q&A' }])}
+      <div class="topic-header"><div>${ICONS.clipboardQ}</div><div><h1>Midterm Exam Q&amp;A</h1></div></div>
+      <p class="topic-dek">${formatInline(EXAM_DATA.intro)}</p>
+      ${paperSections}`;
+  }
+
+  function renderAbout() {
+    const a = ABOUT_DATA;
+    const socialButtons = a.social.map(s => `<a href="${DLUtils.escapeHtml(s.url)}" class="btn btn--secondary" target="_blank" rel="noopener noreferrer">${ICONS[s.icon] || ''} ${DLUtils.escapeHtml(s.platform)}</a>`).join('');
+    return `
+      ${breadcrumbHtml([{ label: 'Home', href: '#/' }, { label: 'About' }])}
+      <div class="topic-header"><div>${ICONS.user}</div><div><h1>About</h1></div></div>
+      <div class="about-card">
+        <div class="about-card__row"><span class="about-card__label">Name</span><span class="about-card__value">${DLUtils.escapeHtml(a.name)}</span></div>
+        <div class="about-card__row"><span class="about-card__label">Department</span><span class="about-card__value">${DLUtils.escapeHtml(a.department)}</span></div>
+        <div class="about-card__row"><span class="about-card__label">ID</span><span class="about-card__value">${DLUtils.escapeHtml(a.id)}</span></div>
+        <div class="about-card__row"><span class="about-card__label">University</span><span class="about-card__value">${DLUtils.escapeHtml(a.university)}</span></div>
+        <div class="about-card__social">${socialButtons}</div>
+      </div>`;
+  }
+
   function renderNotFound() {
     return { page: `<div class="topic-header"><h1>Page not found</h1></div><p class="block-p">That page doesn't exist. <a href="#/">Go back home</a>.</p>`, toolMounts: [] };
   }
@@ -327,6 +378,8 @@ const App = (function () {
     if (parts[0] === 'topic' && parts[1]) return { page: 'topic', topicId: parts[1], anchor: parts[2] || null };
     if (parts[0] === 'tools') return { page: 'tools' };
     if (parts[0] === 'quiz') return { page: 'quiz' };
+    if (parts[0] === 'exam-qa') return { page: 'exam-qa', openId: parts[1] || null };
+    if (parts[0] === 'about') return { page: 'about' };
     if (parts[0] === 'references') return { page: 'references' };
     return { page: 'home' };
   }
@@ -359,6 +412,8 @@ const App = (function () {
     }
     else if (route.page === 'tools') { contentEl.innerHTML = renderToolsHub(); document.title = `Interactive Tools | ${COURSE_DATA.meta.courseTitle}`; }
     else if (route.page === 'quiz') { window.Quiz.render(contentEl); document.title = `Practice Quiz | ${COURSE_DATA.meta.courseTitle}`; }
+    else if (route.page === 'exam-qa') { contentEl.innerHTML = renderExamQA(route.openId); document.title = `Exam Q&A | ${COURSE_DATA.meta.courseTitle}`; anchor = route.openId; }
+    else if (route.page === 'about') { contentEl.innerHTML = renderAbout(); document.title = `About | ${COURSE_DATA.meta.courseTitle}`; }
     else if (route.page === 'references') { contentEl.innerHTML = renderReferences(); document.title = `References | ${COURSE_DATA.meta.courseTitle}`; }
 
     document.getElementById('sidebar-nav-wrap').innerHTML = sidebarHtml(route);
@@ -369,7 +424,7 @@ const App = (function () {
     if (anchor) {
       requestAnimationFrame(() => {
         const el = document.getElementById(anchor);
-        if (el) {
+        if (el && typeof el.scrollIntoView === 'function') {
           el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           el.style.transition = 'background 200ms ease';
           const orig = el.style.background;
@@ -417,6 +472,11 @@ const App = (function () {
       if (reveal) {
         const target = document.getElementById(reveal.getAttribute('data-reveal'));
         if (target) target.classList.toggle('is-visible');
+        return;
+      }
+      const qaToggle = e.target.closest('[data-qa-toggle]');
+      if (qaToggle) {
+        qaToggle.closest('.qa-item').classList.toggle('is-open');
         return;
       }
       const markBtn = e.target.closest('#mark-complete-btn');
